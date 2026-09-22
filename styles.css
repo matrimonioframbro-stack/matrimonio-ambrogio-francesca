@@ -15,22 +15,19 @@
 body {
   margin: 0;
   min-height: 100vh;
+  position: relative;
+  isolation: isolate;
   color: var(--color-text);
   background: var(--color-page);
   font-family: var(--font-body);
 }
 
-.home-body {
-  position: relative;
-  isolation: isolate;
-}
-
-.home-body::before {
+body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: url("home-background.jpg") center / cover no-repeat;
+  background: url("site-background.jpeg") center / cover no-repeat;
   opacity: 0.14;
   pointer-events: none;
 }
@@ -102,7 +99,7 @@ h1 {
 .photo-carousel {
   position: relative;
   display: grid;
-  grid-template-columns: 48px minmax(0, 1fr) 48px;
+  grid-template-columns: 96px minmax(0, 1fr) 96px;
   align-items: center;
   gap: 18px;
 }
@@ -135,26 +132,28 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
+  width: 96px;
   height: 48px;
-  border: 1px solid var(--color-line);
-  border-radius: 50%;
+  border: 0;
   color: var(--color-text);
-  background: #ffffff;
+  background: transparent;
   cursor: pointer;
 }
 
-.carousel-button span {
+.carousel-arrow-image {
   display: block;
-  margin-top: -3px;
-  font-family: var(--font-title);
-  font-size: 40px;
-  line-height: 1;
+  width: 92px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.carousel-arrow-image-left {
+  transform: scaleX(-1);
 }
 
 .carousel-button:hover,
 .carousel-button:focus-visible {
-  border-color: var(--color-accent);
+  transform: translateY(-1px);
 }
 
 .carousel-button:focus-visible {
@@ -179,25 +178,96 @@ h1 {
   line-height: 1.6;
 }
 
-.map-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 22px;
-  border: 1px solid var(--color-line);
+.ceremony-text a {
   color: var(--color-text);
-  background: #ffffff;
-  font-size: 16px;
-  text-decoration: none;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 5px;
 }
 
-.map-link:hover,
-.map-link:focus-visible {
+.ceremony-text a:hover,
+.ceremony-text a:focus-visible {
+  color: var(--color-accent);
+}
+
+.ceremony-map {
+  position: relative;
+  width: min(520px, 100%);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.ceremony-map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  pointer-events: none;
+}
+
+.ceremony-map-link {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.ceremony-map:hover,
+.ceremony-map:focus-within {
   border-color: var(--color-accent);
 }
 
-.map-link:focus-visible {
+.ceremony-map-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -6px;
+}
+
+.parking-section {
+  width: min(700px, 100%);
+  margin: 48px auto 0;
+  text-align: left;
+}
+
+.parking-section h2 {
+  margin: 0 0 22px;
+  font-family: var(--font-title);
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.parking-list {
+  display: grid;
+  gap: 22px;
+  margin: 0;
+  padding-left: 22px;
+  color: var(--color-muted);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.parking-list li span {
+  display: block;
+  color: var(--color-text);
+}
+
+.parking-list a {
+  display: inline-flex;
+  margin: 10px 10px 0 0;
+  color: var(--color-text);
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 4px;
+}
+
+.parking-list a:hover,
+.parking-list a:focus-visible {
+  color: var(--color-accent);
+}
+
+.parking-list a:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 4px;
 }
@@ -239,6 +309,85 @@ h1 {
   object-fit: cover;
 }
 
+.rsvp-form {
+  width: min(620px, 100%);
+  margin: -24px auto 0;
+}
+
+.form-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.form-field {
+  margin-bottom: 22px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--color-muted);
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.form-field input {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid var(--color-line);
+  padding: 0 16px;
+  color: var(--color-text);
+  background: #ffffff;
+  font: inherit;
+}
+
+.form-field input:focus {
+  border-color: var(--color-accent);
+  outline: 2px solid rgba(143, 111, 95, 0.24);
+  outline-offset: 2px;
+}
+
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 26px;
+  border: 1px solid var(--color-accent);
+  color: #ffffff;
+  background: var(--color-accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.form-submit:hover,
+.form-submit:focus-visible {
+  background: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.form-submit:disabled {
+  opacity: 0.62;
+  cursor: wait;
+}
+
+.form-submit:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.form-message {
+  min-height: 28px;
+  margin: 18px 0 0;
+  color: var(--color-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
 @media (max-width: 860px) {
   .main-nav {
     gap: 18px;
@@ -266,7 +415,7 @@ h1 {
   }
 
   .photo-carousel {
-    grid-template-columns: 42px minmax(0, 1fr) 42px;
+    grid-template-columns: 76px minmax(0, 1fr) 76px;
     gap: 12px;
   }
 
@@ -275,8 +424,13 @@ h1 {
   }
 
   .carousel-button {
-    width: 42px;
-    height: 42px;
+    width: 76px;
+    height: 40px;
+  }
+
+  .carousel-arrow-image {
+    width: 74px;
+    height: 34px;
   }
 }
 

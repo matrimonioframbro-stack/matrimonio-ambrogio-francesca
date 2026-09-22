@@ -48,16 +48,11 @@ class SlidingPhotoCarousel {
     this.nextButton = rootElement.querySelector(".carousel-button-right");
     this.photoSources = photoSources;
     this.currentIndex = 0;
-    this.autoAdvanceIntervalId = null;
-    this.resumeTimeoutId = null;
-    this.autoAdvanceDelay = 3000;
-    this.resumeDelay = 10000;
 
     this.previousButton.addEventListener("click", () => this.handleManualPrevious());
     this.nextButton.addEventListener("click", () => this.handleManualNext());
 
     this.update();
-    this.startAutoAdvance();
   }
 
   renderVisiblePhotos() {
@@ -84,16 +79,12 @@ class SlidingPhotoCarousel {
   }
 
   handleManualPrevious() {
-    this.pauseAutoAdvance();
     this.currentIndex = this.getCircularIndex(this.currentIndex - 1);
     this.update();
-    this.scheduleAutoAdvanceResume();
   }
 
   handleManualNext() {
-    this.pauseAutoAdvance();
     this.showNextPhoto();
-    this.scheduleAutoAdvanceResume();
   }
 
   showNextPhoto() {
@@ -103,31 +94,6 @@ class SlidingPhotoCarousel {
 
   update() {
     this.renderVisiblePhotos();
-  }
-
-  startAutoAdvance() {
-    this.pauseAutoAdvance();
-    this.autoAdvanceIntervalId = window.setInterval(() => {
-      this.showNextPhoto();
-    }, this.autoAdvanceDelay);
-  }
-
-  pauseAutoAdvance() {
-    if (this.autoAdvanceIntervalId !== null) {
-      window.clearInterval(this.autoAdvanceIntervalId);
-      this.autoAdvanceIntervalId = null;
-    }
-  }
-
-  scheduleAutoAdvanceResume() {
-    if (this.resumeTimeoutId !== null) {
-      window.clearTimeout(this.resumeTimeoutId);
-    }
-
-    this.resumeTimeoutId = window.setTimeout(() => {
-      this.startAutoAdvance();
-      this.resumeTimeoutId = null;
-    }, this.resumeDelay);
   }
 
   getCircularIndex(index) {
@@ -140,3 +106,47 @@ class SlidingPhotoCarousel {
 document.querySelectorAll(".photo-carousel").forEach((carouselElement) => {
   new SlidingPhotoCarousel(carouselElement, homePhotoSources);
 });
+
+const rsvpForm = document.querySelector("#rsvp-form");
+const rsvpEndpointUrl = "";
+
+if (rsvpForm !== null) {
+  const messageElement = document.querySelector("#rsvp-message");
+  const submitButton = rsvpForm.querySelector(".form-submit");
+
+  rsvpForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (rsvpEndpointUrl === "") {
+      messageElement.textContent = "Il collegamento RSVP non e ancora attivo.";
+      return;
+    }
+
+    const formData = new FormData(rsvpForm);
+    const participantName = String(formData.get("participantName") || "").trim();
+    const participantSurname = String(formData.get("participantSurname") || "").trim();
+
+    if (!participantName || !participantSurname) {
+      messageElement.textContent = "Inserisci nome e cognome.";
+      return;
+    }
+
+    submitButton.disabled = true;
+    messageElement.textContent = "Invio RSVP in corso...";
+
+    try {
+      await fetch(rsvpEndpointUrl, {
+        method: "POST",
+        mode: "no-cors",
+        body: new URLSearchParams(formData),
+      });
+
+      rsvpForm.reset();
+      messageElement.textContent = "RSVP inviata. I dati sono stati salvati.";
+    } catch (error) {
+      messageElement.textContent = "Non sono riuscito a inviare l'RSVP. Riprova tra poco.";
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+}
