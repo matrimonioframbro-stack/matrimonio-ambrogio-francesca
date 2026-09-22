@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>RSVP - Ambrogio & Francesca</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20260922">
   </head>
   <body>
     <header class="site-header">
@@ -20,6 +20,26 @@
 
     <main class="simple-page">
       <h1>RSVP</h1>
+
+      <form class="rsvp-form" id="rsvp-form">
+        <input class="form-honeypot" name="website" type="text" tabindex="-1" autocomplete="off">
+
+        <div class="form-field">
+          <label for="participant-name">Nome partecipante</label>
+          <input id="participant-name" name="participantName" type="text" autocomplete="given-name" required>
+        </div>
+
+        <div class="form-field">
+          <label for="participant-surname">Cognome partecipante</label>
+          <input id="participant-surname" name="participantSurname" type="text" autocomplete="family-name" required>
+        </div>
+
+        <button class="form-submit" type="submit">Invia RSVP</button>
+
+        <p class="form-message" id="rsvp-message" aria-live="polite"></p>
+      </form>
     </main>
+
+    <script src="script.js"></script>
   </body>
 </html>
