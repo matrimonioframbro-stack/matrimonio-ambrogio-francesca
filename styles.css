@@ -28,7 +28,7 @@ body::before {
   inset: 0;
   z-index: -1;
   background: url("site-background.jpeg") center / cover no-repeat;
-  opacity: 0.14;
+  opacity: 0.32;
   pointer-events: none;
 }
 
